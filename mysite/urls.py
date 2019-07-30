@@ -22,4 +22,5 @@ urlpatterns = [
     path('', pollsview.index),
     path('questions/<int:qid>', pollsview.questions),
     path('questionlist',pollsview.questionlist),
+    path('vote/<int:cid>',pollsview.vote),
 ]

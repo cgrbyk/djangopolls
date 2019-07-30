@@ -17,7 +17,8 @@
                         <th scope="col">#</th>
                         <th scope="col">question</th>
                         <th scope="col">choice</th>
-                        <th scope="col">votes</th>
+                        <th scope="col">vote count</th>
+                        <th scope='col'>vote</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -27,6 +28,7 @@
                         <td>{{cho.question.question_text}}</td>
                         <td>{{cho.choice_text}}</td>
                         <td>{{cho.votes}}</td>
+                        <td> <a href="/vote/{{cho.id}}"> Vote </a></td>
                       </tr>
                       {% endfor %}
                     </tbody>

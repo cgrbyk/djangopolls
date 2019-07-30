@@ -17,7 +17,7 @@
                         <th scope="col">#</th>
                         <th scope="col">question</th>
                         <th scope="col">pub_date</th>
-                        <!-- <th scope="col"><a href></th>-->
+                        <th scope="col">vote</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -26,6 +26,7 @@
                         <th scope="row">{{que.id}}</th>
                         <td>{{que.question_text}}</td>
                         <td>{{que.pub_date}}</td>
+                        <td><a href="/questions/{{que.id}}">vote</a></td>
                       </tr>
                       {% endfor %}
                     </tbody>
