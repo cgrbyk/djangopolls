@@ -1,7 +1,7 @@
 from django.test import TestCase
 import datetime
 
-from polls import models
+from .models import Question,Choice
 
 class PollTestCase(TestCase):
 
@@ -17,13 +17,15 @@ class PollTestCase(TestCase):
 
     def test_question_count(self):
         questions = Question.objects.all()
-        self.assertEqual(questions.count,2)
+        self.assertEqual(questions.count(),2)
     
     def test_choice_count(self):
-        choices = Choice.objects.filter(question.id=1)
-        self.assertEqual(Choices.count,3)
-        choices = Choice.objects.filter(question.id=2)
-        self.assertEqual(Choices.count,3)
+        que=Question.objects.get(id = 1)
+        choices = Choice.objects.filter(question = que)
+        self.assertEqual(choices.count,3)
+        que=Question.objects.get(id = 2)
+        choices = Choice.objects.filter(question = que)
+        self.assertEqual(choices.count,3)
     
     def test_question_get(self):
         que=Question.objects.get(id=1)
@@ -34,7 +36,8 @@ class PollTestCase(TestCase):
         self.assertEqual(que,None)
 
     def test_vote(self):
-        choices=Choices.objects.filter(question.id=1)
+        que=Question.objects.get(id = 1)
+        choices=Choices.objects.filter(question = que)
         for cho in choices:
             self.assertAlmostEqual(cho.votes,0)
         choices[2].vote=choices[2].vote + 1
@@ -58,7 +61,7 @@ class PollTestCase(TestCase):
     
     def test_vote_inc(self):
         cho_first_vote_count = Choices.objects.get(id=1).vote
-        esponse = self.client.get('vote/1')
+        response = self.client.get('vote/1')
         self.assertEqual(response.status_code, 200)
         cho_second_vote_count = Choices.objects.get(id=1).vote
         self.assertEqual(cho_first_vote_count+1,cho_second_vote_count)
