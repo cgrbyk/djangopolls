@@ -48,33 +48,32 @@ class PollTestCase(TestCase):
         self.assertNotEqual(que, None)
 
     def test_fail_get(self):
-        que = Question.objects.get(id=15749214)
-        self.assertEqual(que, None)
+        que = Question.objects.filter(id = 15749214)
+        self.assertEqual(que.count(), 0)
 
     def test_vote(self):
         que = Question.objects.get(id=1)
-        choices = Choices.objects.filter(question=que)
+        choices = Choice.objects.filter(question=que)
         for cho in choices:
             self.assertAlmostEqual(cho.votes, 0)
-        choices[2].vote = choices[2].vote + 1
-        self.assertEqual(choices[2].vote, 1)
+        choices[2].votes = choices[2].votes + 1
+        self.assertEqual(choices[2].votes, 1)
 
     def test_load_succes(self):
-        response = self.client.get("questionlist")
+        response = self.client.get('')
         self.assertEqual(response.status_code, 200, msg="View is not reachable")
         self.assertTemplateUsed(response, "questionlist.html")
-        response = self.client.get("vote/1")
+        response = self.client.get("/vote/1")
         self.assertEqual(response.status_code, 200, msg="View is not reachable")
         self.assertTemplateUsed(response, "vote.html")
 
     def test_load_fail(self):
-        response = self.client.get("vote/14352345")
+        response = self.client.get("/vote/14352345")
         self.assertEqual(response.status_code, 404, msg="Should be 404")
-        self.assertTemplateUsed(response, "vote.html")
 
     def test_vote_inc(self):
-        cho_first_vote_count = Choices.objects.get(id=1).vote
-        response = self.client.get("vote/1")
-        self.assertEqual(response.status_code, 200)
-        cho_second_vote_count = Choices.objects.get(id=1).vote
+        cho_first_vote_count = Choice.objects.get(id = 1).votes
+        response = self.client.post('/vote/incvote', {'cid': 1})
+        self.assertEqual(response.status_code, 302)
+        cho_second_vote_count = Choice.objects.get(id = 1).votes
         self.assertEqual(cho_first_vote_count + 1, cho_second_vote_count)
