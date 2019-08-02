@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from polls import views as pollsview
+from rest_framework.authtoken.views import obtain_auth_token
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', pollsview.questionlist),
     path('vote/<int:id>', pollsview.vote),
-    path('vote/incvote', pollsview.incvote)
+    path('vote/incvote', pollsview.incvote),
+    path('hello/', views.HelloView.as_view(), name='hello'),
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
 ]
