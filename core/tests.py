@@ -16,7 +16,7 @@ class CoreTests(APITestCase):
         self.email = "john@snow.com"
         self.password = "you_know_nothing"
         self.user = User.objects.create_user(self.username, self.email, self.password)
-        self.token = Token.objects.create(user=self.user)
+        self.get_token()
         self.api_authentication()
         Question.objects.create(
             question_text="soru 1", pub_date=datetime.datetime.now()
@@ -43,8 +43,14 @@ class CoreTests(APITestCase):
             question=Question.objects.get(id=2), choice_text="secenek 3", votes=0
         )
 
+    def get_token(self):
+        response = self.client.post('/api/token/', data={'username': self.username, 'password': self.password})
+        tokens = json.loads(response.content)
+        print(tokens)
+        self.token = tokens['access']
+
     def api_authentication(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
 
     def test_login_success(self):
         response = self.client.login(username=self.username, password=self.password)
@@ -58,12 +64,6 @@ class CoreTests(APITestCase):
         response = self.client.get('/hello/')
         print(json.loads(response.content))
         self.assertEqual(json.loads(response.content)['message'], 'Hello, World !!')
-
-    # dönen token ile hafızadaki token aynı olup olmaması kontrol ediliyor.
-    def test_token_get(self):
-        response = self.client.post('/api-token-auth/', data={'username': self.username, 'password': self.password})
-        # print(json.loads(response.content)['token'])
-        self.assertEqual(json.loads(response.content)['token'], self.token.key)
 
     # response should return question list
     def test_api_question_get(self):

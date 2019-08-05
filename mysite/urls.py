@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from polls import views as pollsview
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt import views as jwt_views
 from core import views
 
 urlpatterns = [
@@ -28,5 +28,6 @@ urlpatterns = [
     path('question/', views.QuestionAPI.as_view(), name='question'),
     path('choice/', views.ChoiceAPI.as_view(), name='choice'),
     path('vote/', views.VoteAPI.as_view(), name='vote'),
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]
