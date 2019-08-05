@@ -25,5 +25,8 @@ urlpatterns = [
     path('vote/<int:id>', pollsview.vote),
     path('vote/incvote', pollsview.incvote),
     path('hello/', views.HelloView.as_view(), name='hello'),
+    path('question/', views.QuestionAPI.as_view(), name='question'),
+    path('choice/', views.ChoiceAPI.as_view(), name='choice'),
+    path('vote/', views.VoteAPI.as_view(), name='vote'),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
 ]
