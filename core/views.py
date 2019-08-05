@@ -21,7 +21,7 @@ class HelloView(APIView):
 
 
 class QuestionAPI(APIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         questions = models.Question.objects.all().values()
