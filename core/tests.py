@@ -1,7 +1,7 @@
 import json
 from django.contrib.auth.models import User
-from django.urls import reverse
-
+from polls.models import Question, Choice
+import datetime
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
@@ -18,6 +18,30 @@ class CoreTests(APITestCase):
         self.user = User.objects.create_user(self.username, self.email, self.password)
         self.token = Token.objects.create(user=self.user)
         self.api_authentication()
+        Question.objects.create(
+            question_text="soru 1", pub_date=datetime.datetime.now()
+        )
+        Question.objects.create(
+            question_text="soru 2", pub_date=datetime.datetime.now()
+        )
+        Choice.objects.create(
+            question=Question.objects.get(id=1), choice_text="secenek 1", votes=0
+        )
+        Choice.objects.create(
+            question=Question.objects.get(id=1), choice_text="secenek 2", votes=0
+        )
+        Choice.objects.create(
+            question=Question.objects.get(id=1), choice_text="secenek 3", votes=0
+        )
+        Choice.objects.create(
+            question=Question.objects.get(id=2), choice_text="secenek 1", votes=0
+        )
+        Choice.objects.create(
+            question=Question.objects.get(id=2), choice_text="secenek 2", votes=0
+        )
+        Choice.objects.create(
+            question=Question.objects.get(id=2), choice_text="secenek 3", votes=0
+        )
 
     def api_authentication(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
@@ -41,18 +65,28 @@ class CoreTests(APITestCase):
         # print(json.loads(response.content)['token'])
         self.assertEqual(json.loads(response.content)['token'], self.token.key)
 
-    def test_post(self):
-        response = self.client.post('/api-token-auth/', data={'username': self.username, 'password': self.password})
-
+    # response should return question list
     def test_api_question_get(self):
-        response = self.client.get('/api-questions/')
-        # response should return question list
+        response = self.client.get('/question/')
+        data = json.loads(response.content)
+        self.assertEqual(data[0]['id'], Question.objects.all().first().id)
+        self.assertEqual(data[0]['question_text'], Question.objects.all().first().question_text)
 
+    # response should return choice list
     def test_api_choice_get(self):
-        response = self.client.get('/api-choices/')
-        # response should return choice list
+        response = self.client.get('/choice/')
+        data = json.loads(response.content)
+        print(data)
+        cho = Choice.objects.all().first()
+        que = Question.objects.all().first()
+        self.assertEqual(data[0][str(que.id)], que.question_text)
+        self.assertEqual(data[0][str(que.id)+'-'+str(cho.id)], cho.choice_text)
 
+    # vote api should increment choice's votes
     def test_api_vote(self):
-        response = self.client.get('/api-vote/', data={'choice_id': 1})
-        # vote api should increment choice's votes
+        choice_cote_count_before_post = Choice.objects.get(id=1).votes
+        response = self.client.post('/vote/', data={'c_id': 1})
+        choice_cote_count_after_post = Choice.objects.get(id=1).votes
+        self.assertEqual(choice_cote_count_before_post+1, choice_cote_count_after_post)
+
 
