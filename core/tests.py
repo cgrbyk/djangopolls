@@ -41,3 +41,18 @@ class CoreTests(APITestCase):
         # print(json.loads(response.content)['token'])
         self.assertEqual(json.loads(response.content)['token'], self.token.key)
 
+    def test_post(self):
+        response = self.client.post('/api-token-auth/', data={'username': self.username, 'password': self.password})
+
+    def test_api_question_get(self):
+        response = self.client.get('/api-questions/')
+        # response should return question list
+
+    def test_api_choice_get(self):
+        response = self.client.get('/api-choices/')
+        # response should return choice list
+
+    def test_api_vote(self):
+        response = self.client.get('/api-vote/', data={'choice_id': 1})
+        # vote api should increment choice's votes
+
