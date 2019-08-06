@@ -8,4 +8,4 @@ def vote():
     choice = Choice.objects.get(id=7)
     choice.votes = choice.votes + 1
     choice.save()
-    return 'voted!!'
+    return 'voted!! ' + str(choice.votes)
