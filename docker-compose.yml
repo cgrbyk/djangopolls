@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - worker
+      - beat
+  redis:
+    image: redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+  worker:
+    build: .
+    command: bash -c "celery -A mysite worker -l info"
+    depends_on:
+      - redis
+  beat:
+    build: .
+    command: bash -c "celery -A mysite beat --scheduler django_celery_beat.schedulers:DatabaseScheduler --loglevel=debug"
+    depends_on:
+      - redis
+volumes:
+  postgres_data:
