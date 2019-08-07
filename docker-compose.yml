@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  db:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
+    restart: on-failure
+
   web:
     build: .
     command: bash -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"
@@ -12,20 +22,30 @@ services:
       - redis
       - worker
       - beat
+      - db
+    restart: on-failure
+
   redis:
     image: redis
-    hostname: redis
     ports:
       - "6379:6379"
+    restart: on-failure
+
   worker:
     build: .
     command: bash -c "celery -A mysite worker -l info"
     depends_on:
       - redis
+      - db
+    restart: on-failure
+
   beat:
     build: .
     command: bash -c "celery -A mysite beat --scheduler django_celery_beat.schedulers:DatabaseScheduler --loglevel=debug"
     depends_on:
       - redis
+      - db
+    restart: on-failure
+
 volumes:
   postgres_data:
