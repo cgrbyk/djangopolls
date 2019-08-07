@@ -41,7 +41,7 @@ services:
 
   beat:
     build: .
-    command: bash -c "celery -A mysite beat --scheduler django_celery_beat.schedulers:DatabaseScheduler --loglevel=debug"
+    command: bash -c "celery -A mysite beat --scheduler django_celery_beat.schedulers:DatabaseScheduler --loglevel=debug" #rm celerybeat.pid
     depends_on:
       - redis
       - db
