@@ -1,34 +1,33 @@
 from django.test import TestCase
-import datetime
-
+from django.utils import timezone
 from .models import Question, Choice
 
 
 class PollTestCase(TestCase):
     def setUp(self):
-        Question.objects.create(
-            question_text="soru 1", pub_date=datetime.datetime.now()
+        q1 = Question.objects.create(
+            question_text="soru 1", pub_date=timezone.now()
         )
-        Question.objects.create(
-            question_text="soru 2", pub_date=datetime.datetime.now()
-        )
-        Choice.objects.create(
-            question=Question.objects.get(id=1), choice_text="şık 1", votes=0
+        q2 = Question.objects.create(
+            question_text="soru 2", pub_date=timezone.now()
         )
         Choice.objects.create(
-            question=Question.objects.get(id=1), choice_text="şık 2", votes=0
+            question= q1, choice_text="şık 1", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=1), choice_text="şık 3", votes=0
+            question= q1, choice_text="şık 2", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=2), choice_text="şık 1", votes=0
+            question= q1, choice_text="şık 3", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=2), choice_text="şık 2", votes=0
+            question= q2, choice_text="şık 1", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=2), choice_text="şık 3", votes=0
+            question= q2, choice_text="şık 2", votes=0
+        )
+        Choice.objects.create(
+            question= q2, choice_text="şık 3", votes=0
         )
 
     def test_question_count(self):

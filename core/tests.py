@@ -1,9 +1,9 @@
 import json
 from django.contrib.auth.models import User
 from polls.models import Question, Choice
-import datetime
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
+from django.utils import timezone
 
 # Create your tests here.
 # http http://127.0.0.1:8000/hello/ 'Authorization: Token 7f423d527b6937eae72a54fde82e5f914ad31db5'
@@ -18,30 +18,40 @@ class CoreTests(APITestCase):
         self.user = User.objects.create_user(self.username, self.email, self.password)
         self.get_token()
         self.api_authentication()
-        Question.objects.create(
-            question_text="soru 1", pub_date=datetime.datetime.now()
+        q1 = Question.objects.create(
+            question_text="soru 1", pub_date=timezone.now()
         )
-        Question.objects.create(
-            question_text="soru 2", pub_date=datetime.datetime.now()
-        )
-        Choice.objects.create(
-            question=Question.objects.get(id=1), choice_text="secenek 1", votes=0
+        q2 = Question.objects.create(
+            question_text="soru 2", pub_date=timezone.now()
         )
         Choice.objects.create(
-            question=Question.objects.get(id=1), choice_text="secenek 2", votes=0
+            question=q1, choice_text="secenek 1", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=1), choice_text="secenek 3", votes=0
+            question=q1, choice_text="secenek 2", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=2), choice_text="secenek 1", votes=0
+            question=q1, choice_text="secenek 3", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=2), choice_text="secenek 2", votes=0
+            question=q2, choice_text="secenek 1", votes=0
         )
         Choice.objects.create(
-            question=Question.objects.get(id=2), choice_text="secenek 3", votes=0
+            question=q2, choice_text="secenek 2", votes=0
         )
+        Choice.objects.create(
+            question=q2, choice_text="secenek 3", votes=0
+        )
+        # self.Question_Choice_list()
+
+    def test_Question_Choice_list(self):
+        print('\n\nlisting all questions and choices \n')
+        listq=Question.objects.all()
+        print(*listq)
+        listc = Choice.objects.all()
+        print(*listc)
+        que = Question.objects.get(id=1)
+        print(que)
 
     def get_token(self):
         response = self.client.post('/api/token/', data={'username': self.username, 'password': self.password})
@@ -88,5 +98,3 @@ class CoreTests(APITestCase):
         response = self.client.post('/vote/', data={'c_id': 1})
         choice_cote_count_after_post = Choice.objects.get(id=1).votes
         self.assertEqual(choice_cote_count_before_post+1, choice_cote_count_after_post)
-
-
