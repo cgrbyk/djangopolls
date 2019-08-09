@@ -19,14 +19,17 @@ class CoreTests(APITestCase):
         self.get_token()
         self.api_authentication()
         q1 = Question.objects.create(
-            question_text="soru 1", pub_date=timezone.now()
+             question_text="soru 1", pub_date=timezone.now()
         )
+        self.q1_id = q1.id
         q2 = Question.objects.create(
-            question_text="soru 2", pub_date=timezone.now()
+             question_text="soru 2", pub_date=timezone.now()
         )
-        Choice.objects.create(
+        self.q2_id = q2.id
+        c1 = Choice.objects.create(
             question=q1, choice_text="secenek 1", votes=0
         )
+        self.c1_id = c1.id
         Choice.objects.create(
             question=q1, choice_text="secenek 2", votes=0
         )
@@ -43,15 +46,6 @@ class CoreTests(APITestCase):
             question=q2, choice_text="secenek 3", votes=0
         )
         # self.Question_Choice_list()
-
-    def test_Question_Choice_list(self):
-        print('\n\nlisting all questions and choices \n')
-        listq=Question.objects.all()
-        print(*listq)
-        listc = Choice.objects.all()
-        print(*listc)
-        que = Question.objects.get(id=1)
-        print(que)
 
     def get_token(self):
         response = self.client.post('/api/token/', data={'username': self.username, 'password': self.password})
@@ -94,7 +88,7 @@ class CoreTests(APITestCase):
 
     # vote api should increment choice's votes
     def test_api_vote(self):
-        choice_cote_count_before_post = Choice.objects.get(id=1).votes
-        response = self.client.post('/vote/', data={'c_id': 1})
-        choice_cote_count_after_post = Choice.objects.get(id=1).votes
+        choice_cote_count_before_post = Choice.objects.filter(id=self.c1_id).first().votes
+        response = self.client.post('/vote/', data={'c_id': self.c1_id})
+        choice_cote_count_after_post = Choice.objects.get(id=self.c1_id).votes
         self.assertEqual(choice_cote_count_before_post+1, choice_cote_count_after_post)
