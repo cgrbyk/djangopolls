@@ -44,7 +44,7 @@ pipeline {
         withPythonEnv('/bin/python3.6') {
            pysh "python setup.py sdist"
            pysh "python setup.py bdist_wheel"
-           pysh "python -m twine upload dist/* -r nexus"
+           pysh "python -m twine upload dist/* -r polls"
         }
       }
     }
