@@ -1,5 +1,5 @@
 #!/usr/bin/groovy
-
+#!/bin/bash
 node {
   // If you are having issues with your project not getting updated,
   // try uncommenting the following lines.
