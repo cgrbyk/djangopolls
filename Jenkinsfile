@@ -10,14 +10,14 @@ pipeline {
  stages {
    stage('Install project requirements') {
      steps {
-         withPythonEnv('/bin/python3.6') {
+         withPythonEnv('python') {
            pysh 'python -m pip install  -r requirements.txt'
          }
      }
    }
    stage('Test') {
         steps{
-           withPythonEnv('/bin/python3.6') {
+           withPythonEnv('/python') {
            pysh 'tox'
          }
         }
