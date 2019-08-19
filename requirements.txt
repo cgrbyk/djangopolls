@@ -6,3 +6,4 @@ django_celery_beat==1.5.0
 djangorestframework==3.9.4
 django_celery_results==1.1.2
 djangorestframework_simplejwt
+tox
