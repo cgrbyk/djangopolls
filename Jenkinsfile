@@ -11,6 +11,7 @@ pipeline {
    stage('Install project requirements') {
      steps {
          withPythonEnv('python') {
+           pysh 'pip install virtualenv'
            pysh 'python -m pip install  -r requirements.txt'
          }
      }
