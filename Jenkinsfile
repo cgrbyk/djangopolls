@@ -10,7 +10,7 @@ pipeline {
  stages {
    stage('Prepare virtualenv with tools') {
      steps {
-       drmPreparePy3Venv()
+       sh 'groovy /sky-jenkins-utils/vars/drmPreparePy3Venv.groovy'
      }
    }
    stage('Install project requirements') {
@@ -25,7 +25,7 @@ pipeline {
            expression { should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true }
        }
         steps{
-           drmTestAndAnalysis()
+           sh 'groovy /sky-jenkins-utils/vars/drmTestAndAnalysis.groovy'
         }
    }
    stage('SKY Compatibility Check') {
@@ -33,7 +33,7 @@ pipeline {
            expression { should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true }
        }
        steps {
-         drmCompatibilityCheck()
+         sh 'groovy /sky-jenkins-utils/vars/drmCompatibilityCheck.groovy'
        }
    }
  }
