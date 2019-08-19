@@ -7,4 +7,3 @@ djangorestframework==3.9.4
 django_celery_results==1.1.2
 djangorestframework_simplejwt
 tox
-Django
