@@ -22,8 +22,6 @@ pipeline {
    stage('Tox'){
         steps{
             withPythonEnv('python3') {
-                sh 'apt-get install python3.6'
-                sh 'apt-get install python3.7'
                 sh 'tox'
             }
         }
