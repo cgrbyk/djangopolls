@@ -20,6 +20,11 @@ pipeline {
             sh 'tox'
         }
      }
+     steps{
+     withPythonEnv('python3') {
+            sh 'tox'
+        }
+     }
    }
  }
 }
