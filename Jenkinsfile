@@ -16,6 +16,7 @@ pipeline {
      steps{
         withPythonEnv('python3') {
             sh 'python manage.py migrate'
+            sh 'python manage.py runserver'
             sh 'python manage.py test'
         }
      }
