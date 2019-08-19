@@ -8,11 +8,6 @@ pipeline {
    APP_URL = 'http://product-ipam-ui-common.apps.skyz.tech/'
  }
  stages {
-   stage('Prepare virtualenv with tools') {
-     steps {
-       sh 'groovy /sky-jenkins-utils/vars/drmPreparePy3Venv.groovy'
-     }
-   }
    stage('Install project requirements') {
      steps {
          withPythonEnv('/bin/python3.6') {
@@ -21,20 +16,9 @@ pipeline {
      }
    }
    stage('Test') {
-       when {
-           expression { should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true }
-       }
         steps{
-           sh 'groovy /sky-jenkins-utils/vars/drmTestAndAnalysis.groovy'
+           sh 'tox'
         }
-   }
-   stage('SKY Compatibility Check') {
-       when {
-           expression { should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true }
-       }
-       steps {
-         sh 'groovy /sky-jenkins-utils/vars/drmCompatibilityCheck.groovy'
-       }
    }
  }
 }
