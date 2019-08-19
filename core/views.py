@@ -50,7 +50,9 @@ class ChoiceAPI(APIView):
     def post(self, request):
         choice_text = request.POST.get('choice_text')
         q_id = request.POST.get('q_id')
-        c = models.Choice.objects.create(question=models.Question.objects.get(id=q_id), choice_text=choice_text, votes=0)
+        c = models.Choice.objects.create(question=models.Question.objects.get(id=q_id),
+                                         choice_text=choice_text,
+                                         votes=0)
         return Response(c.id)
 
 
