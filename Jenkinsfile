@@ -20,12 +20,14 @@ pipeline {
             sh 'tox'
         }
      }
+    }
     stage('Tox'){
-    steps{
-    withPythonEnv('python3') {
-            sh 'tox'
+        steps{
+            withPythonEnv('python3') {
+                sh 'tox'
+            }
         }
-     }}
+     }
     }
  }
 }
