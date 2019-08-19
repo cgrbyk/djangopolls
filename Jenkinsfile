@@ -6,7 +6,7 @@ pipeline {
    stage('Install project requirements') {
      steps {
         checkout scm
-         withPythonEnv('python') {
+         withPythonEnv('python3') {
             sh 'python --version'
             sh 'python -m pip install  -r requirements.txt'
          }
@@ -14,7 +14,7 @@ pipeline {
    }
    stage('Test') {
      steps{
-        withPythonEnv('python') {
+        withPythonEnv('python3') {
             sh 'tox'
         }
      }
