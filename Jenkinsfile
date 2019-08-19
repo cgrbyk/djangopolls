@@ -21,13 +21,12 @@ pipeline {
         }
      }
     }
-    stage('Tox'){
+   stage('Tox'){
         steps{
             withPythonEnv('python3') {
                 sh 'tox'
             }
         }
      }
-    }
+   }
  }
-}
