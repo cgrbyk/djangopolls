@@ -15,7 +15,7 @@ pipeline {
    stage('Test') {
      steps{
         withPythonEnv('python3') {
-            sh 'tox'
+            sh 'python manage.py test'
         }
      }
    }
