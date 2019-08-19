@@ -99,15 +99,21 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 # Database Condocker-composeuration
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_ENV_DB', 'postgres'),
-        'USER': os.environ.get('DB_ENV_POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_ENV_POSTGRES_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_PORT_5432_TCP_ADDR', '127.0.0.1'),
-        'PORT': os.environ.get('DB_PORT_5432_TCP_PORT', ''),
-    },
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': os.environ.get('DB_ENV_DB', 'postgres'),
+#        'USER': os.environ.get('DB_ENV_POSTGRES_USER', 'postgres'),
+#        'PASSWORD': os.environ.get('DB_ENV_POSTGRES_PASSWORD', 'postgres'),
+#        'HOST': os.environ.get('DB_PORT_5432_TCP_ADDR', 'db'),
+#        'PORT': os.environ.get('DB_PORT_5432_TCP_PORT', ''),
+#    },
+#}
+
+DATABASES = {'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': 'sqlite3.db',
+    }
 }
 
 
