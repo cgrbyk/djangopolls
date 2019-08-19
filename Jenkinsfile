@@ -47,7 +47,6 @@ pipeline {
             expression { should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true }
         }
          steps{
-            import should.*
 
 
     echo "SONAR QUBE"
@@ -87,7 +86,6 @@ pipeline {
             expression { should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true }
         }
         steps {
-          import should.*
 
     if(should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true){
         withPythonEnv('/bin/python') {
