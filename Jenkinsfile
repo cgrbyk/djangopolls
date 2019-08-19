@@ -15,6 +15,7 @@ pipeline {
    stage('Test') {
      steps{
         withPythonEnv('python3') {
+            sh 'docker-compose up'
             sh 'python manage.py test'
         }
      }
