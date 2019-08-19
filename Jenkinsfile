@@ -9,9 +9,11 @@ pipeline {
  }
  stages {
    stage('Install project requirements') {
+
+    checkout scm
+
      steps {
          withPythonEnv('python') {
-           sh 'pip install virtualenv'
            sh 'python -m pip install  -r requirements.txt'
          }
      }
