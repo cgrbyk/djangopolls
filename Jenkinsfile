@@ -9,7 +9,6 @@ pipeline {
   stages {
     stage('Prepare virtualenv with tools') {
       steps {
-        def call(body) {
         try{
 	   deleteDir()
 	}catch(Exception e){
@@ -33,7 +32,6 @@ pipeline {
       }catch (Exception e) {
         echo e.toString()
       }
-}
 
       }
     }
@@ -51,7 +49,6 @@ pipeline {
          steps{
             import should.*
 
-def call(body) {
 
     echo "SONAR QUBE"
 
@@ -83,7 +80,6 @@ def call(body) {
         sh(" test -e pom.xml &&" + scanner_command + "-Dsonar.java.binaries=target" + "|| echo 'not a java repo' ")
         sh(" test -e package.json &&" + scanner_command + "|| echo 'not a js repo' ")
     }
-}
          }
     }
     stage('SKY Compatibility Check') {
@@ -93,7 +89,6 @@ def call(body) {
         steps {
           import should.*
 
-def call(body) {
     if(should.test(env.BRANCH_NAME, env.PACKAGE_TYPE) == true){
         withPythonEnv('/bin/python') {
     	    // pysh 'python /var/lib/jenkins/pcheck.py'
@@ -102,7 +97,6 @@ def call(body) {
     }
 }
         }
-    }
     // Dockerization
     stage('Dockerization') {
       when {
