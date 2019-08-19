@@ -6,6 +6,7 @@ pipeline {
    stage('Install project requirements') {
      steps {
         checkout scm
+            sh 'python --version'
          withPythonEnv('python') {
             sh 'python -m pip install  -r requirements.txt'
          }
